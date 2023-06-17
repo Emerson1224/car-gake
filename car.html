@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-image: url('road-game.png');
+        background-size: cover;
+        background-position: center;
+    }
+
+    #car {
+        width: 100px;
+        height: 200px;
+        position: absolute;
+        top: 150px;
+        left: 150px;
+        background-image: url('car-car1.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        transform-origin: center;
+    }
+</style>
+</head>
+<body>
+    <div id="car"></div>
+
+    <script>
+        var car = document.getElementById('car');
+        var rotation = 0;
+        var moveDistance = 5;
+        var screenWidth = window.innerWidth;
+        var screenHeight = window.innerHeight;
+
+        document.addEventListener('keydown', function(event) {
+            var key = event.key.toLowerCase();
+
+            if (key === 'w') {
+                moveCar(moveDistance);
+            } else if (key === 's') {
+                moveCar(-moveDistance);
+            } else if (key === 'a') {
+                rotateCar(-15);
+                moveCar(moveDistance);
+            } else if (key === 'd') {
+                rotateCar(15);
+                moveCar(moveDistance);
+            }
+        });
+
+        function moveCar(distance) {
+            var radians = rotation * (Math.PI / 180);
+            var deltaX = distance * Math.sin(radians);
+            var deltaY = -distance * Math.cos(radians);
+
+            var newLeft = car.offsetLeft + deltaX;
+            var newTop = car.offsetTop + deltaY;
+
+            if (newLeft >= 0 && newLeft + car.offsetWidth <= screenWidth) {
+                car.style.left = newLeft + 'px';
+            }
+
+            if (newTop >= 0 && newTop + car.offsetHeight <= screenHeight) {
+                car.style.top = newTop + 'px';
+            }
+        }
+
+        function rotateCar(angle) {
+            rotation += angle;
+            car.style.transform = 'rotate(' + rotation + 'deg)';
+        }
+    </script>
+</body>
+</html>
